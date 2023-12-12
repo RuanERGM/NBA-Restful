@@ -22,54 +22,73 @@ struct PlayersView: View {
                 
                 List{
                     
-                    ForEach(searchText == "" ? players: players.filter( {$0.first_name.contains(searchText)}) ) { player in
+                    ForEach(players) { player in
                         
                         
-                        Text("\(player.first_name) \(player.last_name)")
+                        NavigationLink("\(player.first_name) \(player.last_name)", destination: DetailView(playerName: "\(player.first_name) \(player.last_name)", id: player.id))
+                        
                         
                         
                     }
                     
-                    ProgressView()
-                        .frame(alignment: .center)
-                        .progressViewStyle(.circular)
-                        .onAppear(){
-                            vm.page += 1
-                            if(searchText.isEmpty){
-                                vm.getPlayers(){ playerArray in
-                                    for appendPlayer in playerArray{
-                                        players.append(appendPlayer)
+                    if(players.count >= 100 || players.count == 0){
+                        ProgressView()
+                            .frame(alignment: .center)
+                            .progressViewStyle(.circular)
+                            .onAppear(){
+                                
+                                
+                                if(searchText.isEmpty){
+                                    vm.page += 1
+                                    
+                                    vm.getPlayers(){ playerArray in
+                                        for appendPlayer in playerArray{
+                                            players.append(appendPlayer)
+                                        }
                                     }
                                 }
-                            }
-                            
-                            else{
-                                searchVM.page += 1
-                                searchVM.searchPlayers(search: searchText){ playerArrary in for appendPlayer in playerArrary{
-                                    players.append(appendPlayer)
-                                }
+                                
+                                else{
+                                    searchVM.page += 1
                                     
+                                    searchVM.searchPlayers(search: searchText){ playerArrary in for appendPlayer in playerArrary{
+                                        players.append(appendPlayer)
+                                    }
+                                        
+                                    }
                                 }
+
                                 
                             }
-                           
-                        }
-                        .onChange(of: searchText){
-                            players.removeAll()
-                            searchVM.searchPlayers(search: searchText){ playerArrary in for appendPlayer in playerArrary{
-                                players.append(appendPlayer)
-                            }
-                                
-                            }
-                            
-                        }
-                    
-                    
+
+                    }
+     
                 }
                 
             }
         }
-        
+        .onChange(of: searchText){
+            
+            if searchText.isEmpty{
+                vm.page = 1
+                players.removeAll()
+                
+                vm.getPlayers(){ playerArray in
+                    for appendPlayer in playerArray{
+                        players.append(appendPlayer)
+                    }
+                }                            }
+            else{
+                searchVM.page = 1
+                players.removeAll()
+                searchVM.searchPlayers(search: searchText){ playerArrary in for appendPlayer in playerArrary{
+                    players.append(appendPlayer)
+                }
+                    
+                }
+            }
+            
+        }
         .searchable(text: $searchText)
     }
     
