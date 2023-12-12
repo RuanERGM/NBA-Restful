@@ -10,7 +10,8 @@ import Foundation
 struct PlayerEntry: Codable,Identifiable {
     
 //    let id: Int
-    let id = UUID()
+    let id2 = UUID()
+    let id: Int
     let first_name: String
     let last_name: String
     let height_feet: Int?
@@ -18,6 +19,7 @@ struct PlayerEntry: Codable,Identifiable {
     let position: String
     var team: Team
     var weight_pounds: Int?
+    
 
 }
 

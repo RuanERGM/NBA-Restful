@@ -9,9 +9,8 @@ import Foundation
 
 class getPlayersDetails: ObservableObject{
     
-    let id = 0
     
-    func getDetails(completion: @escaping([Stats]) -> ()){
+    func getDetails(id: Int, completion: @escaping([Stats]) -> ()){
         
         guard let url = URL(string: "https://balldontlie.io/api/v1/season_averages?player_ids[]=\(id)") else {
             

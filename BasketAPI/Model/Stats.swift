@@ -7,8 +7,8 @@
 
 import Foundation
 
-struct Stats: Codable{
-    
+struct Stats: Codable, Identifiable{
+    let id = UUID()
     let games_played: Int
     let player_id: Int
     let season: Int
