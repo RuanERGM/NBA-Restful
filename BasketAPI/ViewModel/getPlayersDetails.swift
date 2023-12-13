@@ -9,8 +9,9 @@ import Foundation
 
 class getPlayersDetails: ObservableObject{
     
+    @Published var id:Int = 0
     
-    func getDetails(id: Int, completion: @escaping([Stats]) -> ()){
+    func getDetails( completion: @escaping([Stats]) -> ()){
         
         guard let url = URL(string: "https://balldontlie.io/api/v1/season_averages?player_ids[]=\(id)") else {
             
@@ -25,7 +26,7 @@ class getPlayersDetails: ObservableObject{
                 let allStats = try decoder.decode(AllStats.self, from: data)
                 completion(allStats.data)
                 
-                // Agora você pode acessar a matriz de entradas de jogador em players.results
+                
             } catch let error {
                 print("Erro ao decodificar JSON: \(error)")
             }

@@ -8,28 +8,39 @@
 import SwiftUI
 
 struct DetailView: View {
-    @ObservedObject var vm =  getPlayersDetails()
-    @State var stats: Stats?
+    @ObservedObject var playerDetailVm = getPlayersDetails()
+    @State var stats = [Stats]()
     @State var playerName: String
     @State var id: Int
     var body: some View {
         VStack{
            
+            if(stats.isEmpty){
                 
-//            Text("Points: \(stats!.pts)")
-//            Text("rebotes: \(stats!.reb)")
-                Text("id: \(id)")
+                Text("No data found for " + playerName)
                 
-                
-            
+            }
+            else{
+                ForEach(stats) { stat in
+                    List{
+                        Text("Média de minutos jogados: " + stat.min)
+                        Text("Média de pontos: \(stat.pts)")
+                        Text("Média de rebotes: \(stat.reb)")
+                        Text("Média de assitência: \(stat.ast)")
+                        Text("Média de turnovers: \(stat.turnover)")
+                    }
+                    
+                    
+                }
+            }
                 
         }
         
         .onAppear(){
-    
-            vm.getDetails(id: id){ statsArray in 
+            playerDetailVm.id = id
+            playerDetailVm.getDetails(){ statsArray in
                 for newStats in statsArray{
-                    stats = newStats
+                    stats.append(newStats)
                 }
                 
             }
