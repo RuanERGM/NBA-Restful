@@ -27,7 +27,6 @@ class GetGames :ObservableObject{
                 let games = try decoder.decode(Games.self, from: data)
                 completion(games.data)
                 
-                // Agora você pode acessar a matriz de entradas de jogador em players.results
             } catch let error {
                 print("Erro ao decodificar JSON: \(error)")
             }
